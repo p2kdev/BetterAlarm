@@ -1,7 +1,10 @@
-export TARGET = iphone:latest:14.0
+export THEOS_PACKAGE_SCHEME=rootless
+export TARGET = iphone:clang:13.7:13.0
 export ARCHS = arm64 arm64e
 
-INSTALL_TARGET_PROCESSES = SpringBoard
+PACKAGE_VERSION=$(THEOS_PACKAGE_BASE_VERSION)
+
+THEOS_DEVICE_IP = 192.168.86.37
 
 include $(THEOS)/makefiles/common.mk
 
@@ -12,5 +15,6 @@ BetterAlarm_CFLAGS = -fobjc-arc
 BetterAlarm_FRAMEWORKS = AVFoundation
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-SUBPROJECTS += preferences
-include $(THEOS_MAKE_PATH)/aggregate.mk
+
+after-install::
+	install.exec "sbreload"
